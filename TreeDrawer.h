@@ -97,11 +97,11 @@ public:
 	unsigned char valueAtVoxel(int* voxel);	
 
 	//add some uniform noise to a voxel
-	unsigned char addNoise_Uniform(unsigned char c, double lb, double ub);	
+	unsigned char addNoise_Uniform(unsigned char c, double lb, double ub, MTRand *);	
 	//add some salt&pepper noise to a voxel
-	unsigned char addNoise_saltPepper(unsigned char c, unsigned char valSalt, double probSalt, unsigned char valPepper, double probPepper);	
+	unsigned char addNoise_saltPepper(unsigned char c, unsigned char valSalt, double probSalt, unsigned char valPepper, double probPepper, MTRand *);	
 	//add some gaussian noise to a voxel
-	unsigned char addNoise_gaussian(unsigned char c, double median, double sigma);
+	unsigned char addNoise_gaussian(unsigned char c, double median, double sigma, MTRand * rand);
 
 	//draw the tree to a matrix
 	void drawImage();

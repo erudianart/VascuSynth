@@ -234,10 +234,9 @@ unsigned char TreeDrawer::valueAtVoxel(int* voxel){
 /**
  * add some uniform noise to a voxel
  */
-unsigned char TreeDrawer::addNoise_Uniform(unsigned char c, double lb, double ub){
+unsigned char TreeDrawer::addNoise_Uniform(unsigned char c, double lb, double ub, MTRand * rand){
         
-	MTRand rand;
-	int x = c + (int) (rand.rand()*(ub-lb) + lb);
+	int x = c + (int) (rand->rand()*(ub-lb) + lb);
 	if (x > 255) {
 		return (unsigned char)255;
 	} else if (x < 0) {
@@ -250,10 +249,9 @@ unsigned char TreeDrawer::addNoise_Uniform(unsigned char c, double lb, double ub
 /**
  * add some salt&pepper noise to a voxel
  */
-unsigned char TreeDrawer::addNoise_saltPepper(unsigned char c, unsigned char valSalt, double probSalt, unsigned char valPepper, double probPepper){
+unsigned char TreeDrawer::addNoise_saltPepper(unsigned char c, unsigned char valSalt, double probSalt, unsigned char valPepper, double probPepper, MTRand * rand){
 	
-    MTRand rand;
-	double r = rand.rand();
+	double r = rand->rand();
 	if(r <= probSalt) {
 		return valSalt;
 	} else if(r <= probPepper+ probSalt) {
@@ -266,10 +264,9 @@ unsigned char TreeDrawer::addNoise_saltPepper(unsigned char c, unsigned char val
 /**
  * add some gaussian noise to a voxel
  */
-unsigned char TreeDrawer::addNoise_gaussian(unsigned char c, double median, double sigma){
+unsigned char TreeDrawer::addNoise_gaussian(unsigned char c, double median, double sigma, MTRand * rand){
     
-	MTRand rand;
-	int x = c + (int)(rand.randNorm(median, sigma));
+	int x = c + (int)(rand->randNorm(median, sigma));
 	if(x > 255) {
 		return (unsigned char)255;
 	} else if(x < 0) {
@@ -299,10 +296,11 @@ void TreeDrawer::drawImage(){
  */
 void TreeDrawer::addNoise_Uniform(double lb, double ub){
     
+    MTRand rand;
 	for(int i = 0; i < dim[0]; i++) {
 		for(int j = 0; j < dim[1]; j++) {
 			for(int k = 0; k < dim[2]; k++) {
-				arr(image, i, j, k, dim) = this->addNoise_Uniform(arr(image, i, j, k, dim), lb, ub);
+				arr(image, i, j, k, dim) = this->addNoise_Uniform(arr(image, i, j, k, dim), lb, ub, &rand);
             }
         }
     }
@@ -313,10 +311,11 @@ void TreeDrawer::addNoise_Uniform(double lb, double ub){
  */
 void TreeDrawer::addNoise_saltPepper(unsigned char valSalt, double probSalt, unsigned char valPepper, double probPepper){
     
+    MTRand rand;
 	for(int i = 0; i < dim[0]; i++) {
 		for(int j = 0; j < dim[1]; j++) {
 			for(int k = 0; k < dim[2]; k++) {
-				arr(image, i, j, k, dim) = this->addNoise_saltPepper(arr(image, i, j, k, dim), valSalt, probSalt, valPepper, probPepper);
+				arr(image, i, j, k, dim) = this->addNoise_saltPepper(arr(image, i, j, k, dim), valSalt, probSalt, valPepper, probPepper, &rand);
             }
         }
     }
@@ -328,10 +327,11 @@ void TreeDrawer::addNoise_saltPepper(unsigned char valSalt, double probSalt, uns
  */
 void TreeDrawer::addNoise_gaussian(double median, double sigma){
     
+    MTRand rand;
 	for(int i = 0; i < dim[0]; i++) {
 		for(int j = 0; j < dim[1]; j++) {
 			for(int k = 0; k < dim[2]; k++) {
-				arr(image, i, j, k, dim) = this->addNoise_gaussian(arr(image, i, j, k, dim), median, sigma);
+				arr(image, i, j, k, dim) = this->addNoise_gaussian(arr(image, i, j, k, dim), median, sigma, &rand);
             }
         }
     }
